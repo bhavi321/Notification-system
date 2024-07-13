@@ -33,7 +33,6 @@ const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).send("Invalid credentials");
     }
-    console.log(user)
     const token = jwt.sign(
       { userId: user._id, username: user.username },
       "secretkey"
