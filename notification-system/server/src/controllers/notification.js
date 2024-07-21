@@ -1,5 +1,4 @@
 const NotificationModel = require("../models/notificationModel");
-const { getIo, connectedUsers } = require("./realtime");
 
 const createNotification = async (req, res) => {
   try {
@@ -7,23 +6,6 @@ const createNotification = async (req, res) => {
     const userId = req.decode.userId;
     const notificationObj = new NotificationModel({ message, userId });
     const createdNotification = await notificationObj.save();
-
-    // const io = getIo();
-    // let id;
-
-    // console.log(connectedUsers, id);
-
-    // io.to([...connectedUsers].filter((ele) => ele != id)).emit(
-    //   "broadcastNotification",
-    //   message,
-    //   {
-    //     except: id,
-    //   }
-    // ); // Use socket.id from the request
-    // if (io) {
-    //   io.sockets.emit("broadcastNotification", message);
-    //   console.log("Message sent to clients:", message);
-    // }
     return res.status(201).send({ status: true, data: createdNotification });
   } catch (error) {
     console.error("Error creating notification:", error);
@@ -36,7 +18,8 @@ const getNotifications = async (req, res) => {
     const userId = req.user._id;
     const fetchedNotifications = await NotificationModel.find({
       userId: { $ne: userId },
-    }).populate('userId');
+      read: false,
+    }).populate("userId");
     return res.status(200).json(fetchedNotifications);
   } catch (error) {
     console.error("Error creating notification:", error);
@@ -44,4 +27,24 @@ const getNotifications = async (req, res) => {
   }
 };
 
-module.exports = { createNotification, getNotifications };
+const markNotificationAsRead = async (req, res) => {
+  try {
+    const notificationId = req.params.id;
+
+    const updateNotification = await NotificationModel.updateOne(
+      {_id: notificationId},
+      { read: true },
+      { new: true }
+    );
+    return res.status(204).json(updateNotification);
+  } catch (error) {
+    console.error("Error updating notification:", error);
+    res.status(500).send({ status: false, message: "Internal server error" });
+  }
+};
+
+module.exports = {
+  createNotification,
+  getNotifications,
+  markNotificationAsRead,
+};

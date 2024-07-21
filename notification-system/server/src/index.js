@@ -4,6 +4,7 @@ const { default: mongoose } = require("mongoose");
 const cors = require("cors");
 const { setupRealTimeService } = require("./controllers/realtime");
 
+
 const app = express();
 app.use(express.json());
 app.use(cors());

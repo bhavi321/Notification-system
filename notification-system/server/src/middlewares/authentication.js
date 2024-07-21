@@ -20,8 +20,6 @@ const authenticate = async (req, res, next) => {
             }
             req.user = user;
             req.decode = decode;
-            console.log("consoling decode", decode)
-            console.log("consoling user", user)
             next();
         }
     

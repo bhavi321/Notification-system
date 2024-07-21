@@ -46,17 +46,13 @@ const setupRealTimeService = (app) => {
       const payload = { message, username: socket.username };
       socket.broadcast.emit("broadcastNotification", payload);
     });
-    // connectedUsers.add(socket.id);
     await UserModel.findByIdAndUpdate(
       socket.userId,
       { connected: true, socketId: socket.id },
       { new: true }
     );
 
-    // socket.on("broadcastNotification", (msg) => {
-    //   console.log("Message received:", msg);
-    //   socket.broadcast.emit("broadcastNotification", msg);
-    // });
+
 
     socket.on("disconnect", async () => {
       await UserModel.findByIdAndUpdate(
