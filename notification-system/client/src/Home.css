@@ -1,0 +1,34 @@
+/* Home.css */
+
+.container {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .fetched-notifications-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .notification-item {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s;
+  }
+  
+  .notification-item:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .notification-title {
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .notification-message {
+    margin-top: 10px;
+  }
+  
